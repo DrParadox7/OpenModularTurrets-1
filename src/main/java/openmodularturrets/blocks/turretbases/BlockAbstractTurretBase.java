@@ -26,9 +26,10 @@ public abstract class BlockAbstractTurretBase extends BlockAbstractContainer {
     public BlockAbstractTurretBase() {
         super(Material.rock);
         this.setCreativeTab(ModularTurrets.modularTurretsTab);
-        if (!ConfigHandler.turretBreakable) {
-            this.setBlockUnbreakable();
-        }
+//        if (!ConfigHandler.turretBreakable) {
+//            this.setBlockUnbreakable();
+//        }
+        this.setHardness(400F);
         this.setStepSound(Block.soundTypeStone);
     }
 
