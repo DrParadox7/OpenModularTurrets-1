@@ -64,6 +64,9 @@ public class PlayerUtil {
     }
 
     public static boolean isPlayerOwner(EntityPlayer player, TurretBase base) {
+    	if (player.canCommandSenderUseCommand(4, "")) {
+    		return true;
+	    }
         return (base.getOwner().equals(player.getUniqueID().toString()) ||
                 (ConfigHandler.offlineModeSupport && base.getOwnerName().equals(player.getDisplayName())));
     }

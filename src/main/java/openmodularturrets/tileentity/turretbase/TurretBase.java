@@ -266,7 +266,6 @@ public abstract class TurretBase extends TileEntityContainer implements IEnergyH
         return null;
     }
 
-
     public TrustedPlayer getTrustedPlayer(EntityPlayer player) {
         return trustedPlayers.get(player.getUniqueID());
     }
