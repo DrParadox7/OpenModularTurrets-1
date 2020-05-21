@@ -12,8 +12,8 @@ public class BlockHardWallTierThree extends BlockAbstract {
     public BlockHardWallTierThree() {
         super(Material.rock);
         this.setCreativeTab(ModularTurrets.modularTurretsTab);
-        this.setResistance(30.0F);
-        this.setHardness(30.0F);
+        this.setResistance(8000.0F);
+        this.setHardness(200.0F);
         this.setHarvestLevel("pickaxe", 3);
         this.setStepSound(Block.soundTypeStone);
         this.setBlockName(Names.Blocks.unlocalisedHardWallTierThree);

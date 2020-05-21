@@ -12,8 +12,8 @@ public class BlockHardWallTierTwo extends BlockAbstract {
     public BlockHardWallTierTwo() {
         super(Material.rock);
         this.setCreativeTab(ModularTurrets.modularTurretsTab);
-        this.setResistance(20.0F);
-        this.setHardness(20.0F);
+        this.setResistance(4000.0F);
+        this.setHardness(100.0F);
         this.setHarvestLevel("pickaxe", 3);
         this.setStepSound(Block.soundTypeStone);
         this.setBlockName(Names.Blocks.unlocalisedHardWallTierTwo);

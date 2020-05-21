@@ -78,19 +78,19 @@ public class ConfigHandler {
 
         baseTierTwoMaxCharge = config.get("TurretBaseTierTwo", "MaxCharge", 50000).getInt();
         baseTierTwoMaxIo = config.get("TurretBaseTierTwo", "MaxIo", 100).getInt();
-        baseTierTwoBlastResistance = config.get("TurretBaseTierTwo", "BlastResistance", 10).getInt();
+        baseTierTwoBlastResistance = config.get("TurretBaseTierTwo", "BlastResistance", 20).getInt();
 
         baseTierThreeMaxCharge = config.get("TurretBaseTierThree", "MaxCharge", 150000).getInt();
         baseTierThreeMaxIo = config.get("TurretBaseTierThree", "MaxIo", 500).getInt();
-        baseTierThreeBlastResistance = config.get("TurretBaseTierThree", "BlastResistance", 10).getInt();
+        baseTierThreeBlastResistance = config.get("TurretBaseTierThree", "BlastResistance", 30).getInt();
 
         baseTierFourMaxCharge = config.get("TurretBaseTierFour", "MaxCharge", 500000).getInt();
         baseTierFourMaxIo = config.get("TurretBaseTierFour", "MaxIo", 1500).getInt();
-        baseTierFourBlastResistance = config.get("TurretBaseTierFour", "BlastResistance", 10).getInt();
+        baseTierFourBlastResistance = config.get("TurretBaseTierFour", "BlastResistance", 40).getInt();
 
         baseTierFiveMaxCharge = config.get("TurretBaseTierFive", "MaxCharge", 10000000).getInt();
         baseTierFiveMaxIo = config.get("TurretBaseTierFive", "MaxIo", 5000).getInt();
-        baseTierFiveBlastResistance = config.get("TurretBaseTierFive", "BlastResistance", 10).getInt();
+        baseTierFiveBlastResistance = config.get("TurretBaseTierFive", "BlastResistance", 50).getInt();
 
         disposable_turret = new TurretSetting(
                 config.get("TurretDisposable", "Range", 10, "Turret range, in blocks").getInt(),
