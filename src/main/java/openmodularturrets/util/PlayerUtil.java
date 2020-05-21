@@ -50,8 +50,8 @@ public class PlayerUtil {
     }
 
     public static TrustedPlayer getTrustedPlayer(EntityPlayer player, TurretBase base) {
-        if (base.getTrustedPlayer(player.getUniqueID()) != null || (ConfigHandler.offlineModeSupport && base.getTrustedPlayer(player.getDisplayName()) != null)) {
-            return (base.getTrustedPlayer(player.getUniqueID()) == null ? base.getTrustedPlayer(player.getDisplayName()) : base.getTrustedPlayer(player.getUniqueID()));
+        if (base.getTrustedPlayer(player) != null || (ConfigHandler.offlineModeSupport && base.getTrustedPlayer(player) != null)) {
+            return (base.getTrustedPlayer(player) == null ? base.getTrustedPlayer(player) : base.getTrustedPlayer(player));
         } else {
             return null;
         }

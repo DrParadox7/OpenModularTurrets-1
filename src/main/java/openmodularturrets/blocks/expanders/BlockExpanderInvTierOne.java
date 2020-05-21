@@ -36,8 +36,8 @@ public class BlockExpanderInvTierOne extends BlockAbstractContainer {
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         AbstractInvExpander expander = (AbstractInvExpander) world.getTileEntity(x, y, z);
         TurretBase base = expander.getBase();
-        if (base != null && base.getTrustedPlayer(player.getUniqueID()) != null) {
-            if (base.getTrustedPlayer(player.getUniqueID()).canOpenGUI) {
+        if (base != null && base.getTrustedPlayer(player) != null) {
+            if (base.getTrustedPlayer(player).canOpenGUI) {
                 player.openGui(ModularTurrets.instance, 7, world, x, y, z);
                 return true;
             }

@@ -161,7 +161,7 @@ public class ConfigureGui extends GuiContainer {
                     textFieldAddTrustedPlayer.setText("");
                     this.base.trustedPlayerIndex = 0;
                     player.openGui(ModularTurrets.instance, 6, player.worldObj, base.xCoord, base.yCoord, base.zCoord);
-                } else if (base.getTrustedPlayer(player.getUniqueID()) != null && base.getTrustedPlayer(player.getUniqueID()).admin) {
+                } else if (base.getTrustedPlayer(player) != null && base.getTrustedPlayer(player).admin) {
                     if (this.base.getTrustedPlayers().get(
                             base.trustedPlayerIndex) != null && this.base.getTrustedPlayers().size() > 0) {
                         sendChangeToServerRemoveTrusted();
@@ -210,7 +210,7 @@ public class ConfigureGui extends GuiContainer {
                 guibutton.displayString = !base.getTrustedPlayers().get(
                         base.trustedPlayerIndex).canOpenGUI ? "\u00A72Y" : "\u00A7cN";
             } else if (this.base.getTrustedPlayers().get(base.trustedPlayerIndex) != null && base.getTrustedPlayer(
-                    player.getUniqueID()).admin) {
+                    player).admin) {
                 sendChangeToServerModifyPermissions(
                         this.base.getTrustedPlayers().get(base.trustedPlayerIndex).getName(), "gui",
                         !base.getTrustedPlayers().get(base.trustedPlayerIndex).canOpenGUI);

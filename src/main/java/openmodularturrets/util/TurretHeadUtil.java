@@ -300,13 +300,7 @@ public class TurretHeadUtil {
     }
 
     public static boolean isTrustedPlayer(UUID uuid, TurretBase base) {
-        for (TrustedPlayer trusted_player : base.getTrustedPlayers()) {
-            if (trusted_player.uuid.equals(uuid)) {
-                return true;
-            }
-        }
-
-        return false;
+        return base.isTrusted(uuid);
     }
 
     public static int getPowerExpanderTotalExtraCapacity(World world, int x, int y, int z) {

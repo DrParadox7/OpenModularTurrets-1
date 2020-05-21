@@ -73,7 +73,7 @@ public abstract class TurretBase extends TileEntityContainer implements IEnergyH
     private boolean attacksPlayers;
     private String owner = "";
     private String ownerName = "";
-    private List<TrustedPlayer> trustedPlayers;
+    private HashMap<UUID, TrustedPlayer> trustedPlayers;
     private int ticks;
     private boolean active;
     private boolean inverted;
@@ -94,7 +94,7 @@ public abstract class TurretBase extends TileEntityContainer implements IEnergyH
         this.attacksMobs = true;
         this.attacksNeutrals = true;
         this.attacksPlayers = false;
-        this.trustedPlayers = new ArrayList<>();
+        this.trustedPlayers = new HashMap<>();
         this.inv = new ItemStack[this.getSizeInventory()];
         this.inverted = true;
         this.active = true;
@@ -235,19 +235,10 @@ public abstract class TurretBase extends TileEntityContainer implements IEnergyH
         }
 
         if (trustedPlayer.uuid != null || ConfigHandler.offlineModeSupport) {
-            for (TrustedPlayer player : trustedPlayers) {
-                if (ConfigHandler.offlineModeSupport) {
-                    if (player.getName().toLowerCase().equals(name.toLowerCase()) || player.getName().equals(getOwnerName())) {
-                        return false;
-                    }
-                } else {
-                    if (player.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.uuid.toString().equals(
-                            owner)) {
-                        return false;
-                    }
-                }
+            if (trustedPlayers.containsKey(trustedPlayer.uuid)){
+                return false;
             }
-            trustedPlayers.add(trustedPlayer);
+            trustedPlayers.put(trustedPlayer.uuid, trustedPlayer);
             return true;
         }
         return false;
@@ -255,21 +246,19 @@ public abstract class TurretBase extends TileEntityContainer implements IEnergyH
 
 
     public boolean removeTrustedPlayer(String name) {
-        for (TrustedPlayer player : trustedPlayers) {
-            if (player.getName().equals(name)) {
-                trustedPlayers.remove(player);
-                return true;
-            }
-        }
-        return false;
+        return trustedPlayers.entrySet().removeIf(e -> e.getValue().name.equalsIgnoreCase(name));
     }
 
     public List<TrustedPlayer> getTrustedPlayers() {
-        return trustedPlayers;
+        return new ArrayList<>(trustedPlayers.values());
+    }
+
+    public boolean isTrusted(UUID uuid) {
+        return trustedPlayers.containsKey(uuid);
     }
 
     public TrustedPlayer getTrustedPlayer(String name) {
-        for (TrustedPlayer trustedPlayer : trustedPlayers) {
+        for (TrustedPlayer trustedPlayer : trustedPlayers.values()) {
             if (trustedPlayer.name.equals(name)) {
                 return trustedPlayer;
             }
@@ -277,22 +266,21 @@ public abstract class TurretBase extends TileEntityContainer implements IEnergyH
         return null;
     }
 
-    public TrustedPlayer getTrustedPlayer(UUID uuid) {
-        for (TrustedPlayer trustedPlayer : trustedPlayers) {
-            if (trustedPlayer.uuid.equals(uuid)) {
-                return trustedPlayer;
-            }
-        }
-        return null;
+
+    public TrustedPlayer getTrustedPlayer(EntityPlayer player) {
+        return trustedPlayers.get(player.getUniqueID());
     }
 
     public void setTrustedPlayers(List<TrustedPlayer> list) {
-        this.trustedPlayers = list;
+        trustedPlayers.clear();
+        for (TrustedPlayer player : list) {
+            trustedPlayers.put(player.uuid, player);
+        }
     }
 
     private NBTTagList getTrustedPlayersAsNBT() {
         NBTTagList nbt = new NBTTagList();
-        for (TrustedPlayer trustedPlayer : trustedPlayers) {
+        for (TrustedPlayer trustedPlayer : trustedPlayers.values()) {
             NBTTagCompound nbtPlayer = new NBTTagCompound();
             nbtPlayer.setString("name", trustedPlayer.name);
             nbtPlayer.setBoolean("canOpenGUI", trustedPlayer.canOpenGUI);
@@ -323,14 +311,14 @@ public abstract class TurretBase extends TileEntityContainer implements IEnergyH
                     trustedPlayer.uuid = getPlayerUUID(trustedPlayer.name);
                 }
                 if (trustedPlayer.uuid != null) {
-                    trustedPlayers.add(trustedPlayer);
+                    trustedPlayers.put(trustedPlayer.uuid, trustedPlayer);
                 }
             } else if (nbt.getCompoundTagAt(i).getString("name").equals("")) {
                 TrustedPlayer trustedPlayer = new TrustedPlayer(nbt.getStringTagAt(i));
                 Logger.getGlobal().info("found legacy trusted Player: " + nbt.getStringTagAt(i));
                 trustedPlayer.uuid = getPlayerUUID(trustedPlayer.name);
                 if (trustedPlayer.uuid != null) {
-                    trustedPlayers.add(trustedPlayer);
+                    trustedPlayers.put(trustedPlayer.uuid, trustedPlayer);
                 }
             }
         }

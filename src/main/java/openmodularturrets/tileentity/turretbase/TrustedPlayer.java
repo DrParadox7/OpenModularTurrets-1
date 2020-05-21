@@ -32,4 +32,18 @@ public class TrustedPlayer {
     public void setAdmin(boolean admin) {
         this.admin = admin;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof TrustedPlayer) {
+            return uuid.equals(((TrustedPlayer) obj).uuid);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
+    }
+
 }

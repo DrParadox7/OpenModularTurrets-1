@@ -42,7 +42,7 @@ public abstract class TurretProjectile extends EntityThrowable {
 
     boolean canDamagePlayer(EntityPlayer entityPlayer) {
         if (!ConfigHandler.turretDamageTrustedPlayers) {
-            if (this.turretBase.getTrustedPlayer(entityPlayer.getUniqueID()) != null || PlayerUtil.getPlayerUIDUnstable(
+            if (this.turretBase.getTrustedPlayer(entityPlayer) != null || PlayerUtil.getPlayerUIDUnstable(
                     this.turretBase.getOwner()).equals(entityPlayer.getUniqueID())) {
                 return false;
             }
