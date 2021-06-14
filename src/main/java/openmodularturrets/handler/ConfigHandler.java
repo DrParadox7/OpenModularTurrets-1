@@ -66,7 +66,10 @@ public class ConfigHandler {
     private static boolean allowBaseCamo;
     private static boolean canRocketsHurtEnderDragon;
     private static boolean shouldSpawnDungeonLoot;
+    private static String[] entityBlacklist;
+    private static boolean debugEntityName;
     public static boolean canOPAccessTurrets;
+
 
     public static void init(File configFile) {
         Configuration config = new Configuration(configFile);
@@ -280,10 +283,16 @@ public class ConfigHandler {
         offlineModeSupport = config.get("ModCompatability", "Enable offline mode support?(warning, makes turrets fairly unsafe)", false).getBoolean();
         EUtoRFRatio = config.get("ModCompatability", "EU to RF Ratio", 8.0D).getDouble();
 
+        entityBlacklist = config.get("miscellaneous", "Entities that the turret should never shoot at", new String[]{"test1", "test2"}).getStringList();
+        debugEntityName = config.get("miscellaneous", "Log entity names when a turret checks for targets. FOR TESTING ONLY THIS WILL SPAM THE CONSOLE", false).getBoolean();
         if (config.hasChanged()) {
             config.save();
         }
     }
+
+    public static String[] getEntityBlacklist() {return entityBlacklist;}
+
+    public static boolean getDebugEntityName() {return debugEntityName;}
 
     public static int getBaseTierOneMaxIo() {
         return baseTierOneMaxIo;
