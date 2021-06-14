@@ -1,13 +1,11 @@
 package openmodularturrets.util;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.*;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityAmbientCreature;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -84,6 +82,18 @@ public class TurretHeadUtil {
         return ArrayUtils.contains(ConfigHandler.getEntityBlacklist(), EntityList.getEntityString(target));
     }
 
+    private static boolean targetIsTrustedPet(EntityLivingBase target,TurretBase base){
+
+        if (ConfigHandler.getProtectTrustedPets() && target instanceof IEntityOwnable){
+            Entity entityOwned = ((IEntityOwnable) target).getOwner();
+            if (entityOwned instanceof EntityPlayer) {
+                EntityPlayer owner = (EntityPlayer) entityOwned;
+                return isPlayerOwner(owner, base) || isTrustedPlayer(owner.getUniqueID(), base);
+            }
+        }
+        return false;
+    }
+
     public static Entity getTarget(TurretBase base, World worldObj, int downLowAmount, int xCoord, int yCoord, int zCoord, int turretRange, TurretHead turret) {
         Entity target = null;
 
@@ -100,6 +110,9 @@ public class TurretHeadUtil {
                     continue;
                 }
 
+                if(targetIsTrustedPet(target1,base)){
+                    continue;
+                }
 
                 if (base.isAttacksNeutrals() && ConfigHandler.globalCanTargetNeutrals) {
                     if (target1 instanceof EntityAnimal && !target1.isDead) {
@@ -158,6 +171,10 @@ public class TurretHeadUtil {
             for (EntityLivingBase target1 : targets) {
 
                 if(targetIsBlacklisted(target1)){
+                    continue;
+                }
+
+                if(targetIsTrustedPet(target1,base)){
                     continue;
                 }
 
@@ -224,6 +241,10 @@ public class TurretHeadUtil {
             for (EntityLivingBase target1 : targets) {
 
                 if(targetIsBlacklisted(target1)){
+                    continue;
+                }
+
+                if(targetIsTrustedPet(target1,base)){
                     continue;
                 }
 

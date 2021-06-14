@@ -68,6 +68,7 @@ public class ConfigHandler {
     private static boolean shouldSpawnDungeonLoot;
     private static String[] entityBlacklist;
     private static boolean debugEntityName;
+    private static boolean protectTrustedPets;
     public static boolean canOPAccessTurrets;
 
 
@@ -261,6 +262,9 @@ public class ConfigHandler {
         globalCanTargetNeutrals = config.get("GlobalTargetingParameters", "Can turrets attack neutrals?",
                 true).getBoolean();
 
+        protectTrustedPets = config.get("GlobalTargetingParameters", "Will turrets ignore pets of trusted players, true: turret does not attack pets :) , false: turret does attack pets :(",
+                true).getBoolean();
+
         globalCanTargetMobs = config.get("GlobalTargetingParameters", "Can turrets attack mobs?", true).getBoolean();
 
         canOPAccessTurrets = config.get("miscellaneous", "Can OPs access all turrets?", false).getBoolean();
@@ -293,6 +297,8 @@ public class ConfigHandler {
     public static String[] getEntityBlacklist() {return entityBlacklist;}
 
     public static boolean getDebugEntityName() {return debugEntityName;}
+
+    public static boolean getProtectTrustedPets() {return protectTrustedPets;}
 
     public static int getBaseTierOneMaxIo() {
         return baseTierOneMaxIo;
