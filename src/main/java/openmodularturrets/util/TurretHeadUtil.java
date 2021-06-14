@@ -2,6 +2,7 @@ package openmodularturrets.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.IMob;
@@ -14,6 +15,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import openmodularturrets.ModularTurrets;
 import openmodularturrets.compatability.ModCompatibility;
 import openmodularturrets.handler.ConfigHandler;
 import openmodularturrets.items.addons.*;
@@ -24,15 +26,21 @@ import openmodularturrets.tileentity.turretbase.TrustedPlayer;
 import openmodularturrets.tileentity.turretbase.TurretBase;
 import openmodularturrets.tileentity.turretbase.TurretBaseTierOneTileEntity;
 import openmodularturrets.tileentity.turrets.TurretHead;
+import org.apache.commons.lang3.ArrayUtils;
+import org.lwjgl.Sys;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import static openmodularturrets.util.PlayerUtil.isPlayerOwner;
 
 public class TurretHeadUtil {
+
+    private static final Logger logger = Logger.getLogger("OpenModularTurrets");
+
     private static final HashSet<EntityPlayerMP> warnedPlayers = new HashSet<EntityPlayerMP>();
 
     public static void warnPlayers(TurretBase base, World worldObj, int downLowAmount, int xCoord, int yCoord, int zCoord, int turretRange) {
@@ -72,6 +80,13 @@ public class TurretHeadUtil {
         }
     }
 
+    private static boolean targetIsBlacklisted(EntityLivingBase target){
+        if(ConfigHandler.getDebugEntityName()){
+            logger.info("Targeting:"+ EntityList.getEntityString(target));
+        }
+        return ArrayUtils.contains(ConfigHandler.getEntityBlacklist(), EntityList.getEntityString(target));
+    }
+
     public static Entity getTarget(TurretBase base, World worldObj, int downLowAmount, int xCoord, int yCoord, int zCoord, int turretRange, TurretHead turret) {
         Entity target = null;
 
@@ -83,6 +98,12 @@ public class TurretHeadUtil {
             List<EntityLivingBase> targets = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axis);
 
             for (EntityLivingBase target1 : targets) {
+
+                if(targetIsBlacklisted(target1)){
+                    continue;
+                }
+
+
                 if (base.isAttacksNeutrals() && ConfigHandler.globalCanTargetNeutrals) {
                     if (target1 instanceof EntityAnimal && !target1.isDead) {
                         target = target1;
@@ -138,6 +159,11 @@ public class TurretHeadUtil {
             List<EntityLivingBase> targets = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axis);
 
             for (EntityLivingBase target1 : targets) {
+
+                if(targetIsBlacklisted(target1)){
+                    continue;
+                }
+
                 if (base.isAttacksNeutrals() && ConfigHandler.globalCanTargetNeutrals) {
                     if (target1 instanceof EntityAnimal && !target1.isDead && target1.getDistance(xCoord, yCoord,
                                                                                                   zCoord) >= 3) {
@@ -199,6 +225,11 @@ public class TurretHeadUtil {
             List<EntityLivingBase> targets = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axis);
 
             for (EntityLivingBase target1 : targets) {
+
+                if(targetIsBlacklisted(target1)){
+                    continue;
+                }
+
                 if (base.isAttacksNeutrals() && ConfigHandler.globalCanTargetNeutrals) {
                     if (target1 instanceof EntityAnimal && !target1.isDead && !target1.isPotionActive(
                             Potion.moveSlowdown.id)) {
